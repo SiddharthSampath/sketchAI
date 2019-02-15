@@ -4,7 +4,9 @@ The app is made with Django, so download the entire project and perform the foll
 
 1. Open the folder through cmd  or terminal
 
-2. Run the command - python manage.py runserver (on windows)
+2. Run the command - 
+                     
+                     python manage.py runserver (on windows)
 
                      python3 manage.py runserver (on linux)
                      

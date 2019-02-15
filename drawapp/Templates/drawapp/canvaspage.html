@@ -11,8 +11,33 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!--<script type="text/javascript" src="{% static 'trial/js/canvas2image.js' %}"></script>-->
-    <!--<script type="text/javascript" src="{% static 'trial/js/html2canvas.min.js' %}"></script>-->
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+    <!-- using different icons for cursor -->
+    <script src="https://cdn.rawgit.com/jwarby/jquery-awesome-cursor/master/dist/jquery.awesome-cursor.min.js"></script>
+
+
+    <!-- erase and draw buttons, with cursor change on clicking the respective buttons -->
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+      $('body').css('cursor', 'pointer');
+      var canvas = document.getElementById("imageView");
+      var context = canvas.getContext("2d");
+      $("#eraser").click(function() {
+		    context.strokeStyle = "#FFFFFF";
+        $('body').css('cursor', 'grabbing');
+	     });
+       $("#draw").click(function() {
+ 		    context.strokeStyle = "#000";
+        $('body').css('cursor', 'pointer');
+
+
+
+ 	     });
+     });
+    </script>
 
   </head>
   <body>
@@ -23,14 +48,17 @@
 
 
     <button type="button" class="btn" id="clear" value ="clear" onclick="window.location.reload()"> clear</button>
+    <button type="button" id="eraser" class="btn" name="button">Erase</button>
+    <button type="button" id="draw" class="btn" name="button">Draw</button>
 
+  <!-- download functionality -->
   <script type="text/javascript">
     var canvas = document.querySelector( 'canvas' )
     var link = document.createElement('a');
         link.innerHTML = 'download image';
         link.classList.add("btn")
         link.setAttribute("id", "downloadbtn")
-    link.addEventListener('click', function(ev) {
+        link.addEventListener('click', function(ev) {
         link.href = canvas.toDataURL();
         link.download = "mypainting.png";
     }, false);

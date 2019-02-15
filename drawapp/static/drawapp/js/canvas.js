@@ -1,7 +1,3 @@
-/* © 2009 ROBO Design
- * http://www.robodesign.ro
- */
-
 // Keep everything in anonymous function, called on window load.
 if(window.addEventListener) {
 window.addEventListener('load', function () {
@@ -59,7 +55,8 @@ window.addEventListener('load', function () {
       if (tool.started) {
         context.lineTo(ev._x, ev._y);
         context.stroke();
-        context.strokestyle = color;
+
+
       }
     };
 
@@ -85,6 +82,7 @@ window.addEventListener('load', function () {
 
     // Call the event handler of the tool.
     var func = tool[ev.type];
+    
     if (func) {
       func(ev);
     }

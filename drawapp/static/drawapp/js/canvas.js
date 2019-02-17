@@ -1,100 +1,87 @@
-// Keep everything in anonymous function, called on window load.
-if(window.addEventListener) {
-window.addEventListener('load', function () {
-  var canvas, context, tool;
-  var color = "rgb(255,0,0)";
+
+  $(document).ready(function() {
+  $('body').css('cursor', 'pointer');
+  });
+
+  //main function for canvas
+  $(function(){
+
+  var canvas=document.getElementById("canvas");
+  var ctx=canvas.getContext("2d");
+
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth=3;
+  var lastX;
+  var lastY;
+
+  var mouseX;
+  var mouseY;
+  var canvasOffset=$("#canvas").offset();
+  var offsetX=canvasOffset.left;
+  var offsetY=canvasOffset.top;
+  var isMouseDown=false;
 
 
-  function init () {
-    // Find the canvas element.
-    canvas = document.getElementById('imageView');
-    if (!canvas) {
-      alert('Error: I cannot find the canvas element!');
-      return;
-    }
+  function handleMouseDown(e){
+    mouseX=parseInt(e.clientX-offsetX);
+    mouseY=parseInt(e.clientY-offsetY);
 
-    if (!canvas.getContext) {
-      alert('Error: no canvas.getContext!');
-      return;
-    }
-
-    // Get the 2D canvas context.
-    context = canvas.getContext('2d');
-    if (!context) {
-      alert('Error: failed to getContext!');
-      return;
-    }
-
-    // Pencil tool instance.
-    tool = new tool_pencil();
-
-    // Attach the mousedown, mousemove and mouseup event listeners.
-    canvas.addEventListener('mousedown', ev_canvas, false);
-    canvas.addEventListener('mousemove', ev_canvas, false);
-    canvas.addEventListener('mouseup',   ev_canvas, false);
+    // Put your mousedown stuff here
+    lastX=mouseX;
+    lastY=mouseY;
+    isMouseDown=true;
   }
 
-  // This painting tool works like a drawing pencil which tracks the mouse
-  // movements.
-  function tool_pencil () {
-    var tool = this;
-    this.started = false;
+  function handleMouseUp(e){
+    mouseX=parseInt(e.clientX-offsetX);
+    mouseY=parseInt(e.clientY-offsetY);
 
-    // This is called when you start holding down the mouse button.
-    // This starts the pencil drawing.
-    this.mousedown = function (ev) {
-        context.beginPath();
-        context.moveTo(ev._x, ev._y);
-        tool.started = true;
-    };
-
-    // This function is called every time you move the mouse. Obviously, it only
-    // draws if the tool.started state is set to true (when you are holding down
-    // the mouse button).
-    this.mousemove = function (ev) {
-      if (tool.started) {
-        context.lineTo(ev._x, ev._y);
-        context.stroke();
-
-
-      }
-    };
-
-    // This is called when you release the mouse button.
-    this.mouseup = function (ev) {
-      if (tool.started) {
-        tool.mousemove(ev);
-        tool.started = false;
-      }
-    };
+    // Put your mouseup stuff here
+    isMouseDown=false;
   }
 
-  // The general-purpose event handler. This function just determines the mouse
-  // position relative to the canvas element.
-  function ev_canvas (ev) {
-    if (ev.layerX || ev.layerX == 0) { // Firefox
-      ev._x = ev.layerX;
-      ev._y = ev.layerY;
-    } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-      ev._x = ev.offsetX;
-      ev._y = ev.offsetY;
-    }
+  function handleMouseOut(e){
+    mouseX=parseInt(e.clientX-offsetX);
+    mouseY=parseInt(e.clientY-offsetY);
 
-    // Call the event handler of the tool.
-    var func = tool[ev.type];
-    
-    if (func) {
-      func(ev);
+    // Put your mouseOut stuff here
+    isMouseDown=false;
+  }
+
+  function handleMouseMove(e){
+    mouseX=parseInt(e.clientX-offsetX);
+    mouseY=parseInt(e.clientY-offsetY);
+
+    // Put your mousemove stuff here
+    if(isMouseDown){
+        ctx.beginPath();
+        if(mode=="pen"){
+            ctx.globalCompositeOperation="source-over";
+            ctx.moveTo(lastX,lastY);
+            ctx.lineTo(mouseX,mouseY);
+            ctx.stroke();
+        }else{
+            ctx.globalCompositeOperation="destination-out";
+            ctx.arc(lastX,lastY,5,0,Math.PI*2,false);
+            ctx.fill();
+        }
+        lastX=mouseX;
+        lastY=mouseY;
     }
   }
-  /*
-  function save(){
-    var color = "rgb(0,0,0)";
-    context.strokestyle = color;
 
-  }*/
-  init();
+  $("#canvas").mousedown(function(e){handleMouseDown(e);});
+  $("#canvas").mousemove(function(e){handleMouseMove(e);});
+  $("#canvas").mouseup(function(e){handleMouseUp(e);});
+  $("#canvas").mouseout(function(e){handleMouseOut(e);});
+  //cursor change when erase is clicked and changing 'mode' everytime draw or erase is clicked
+  var mode="pen";
+  $("#pen").click(function(){ mode="pen";
+  //context.strokeStyle = "#000";
+  //context.lineWidth = 1;
+  $('body').css('cursor', 'pointer');});
+  $("#eraser").click(function(){ mode="eraser";
+  $('body').css('cursor', 'grabbing');});
 
-}, false); }
-
-// vim:set spell spl=en fo=wan1croql tw=80 ts=2 sw=2 sts=2 sta et ai cin fenc=utf-8 ff=unix:
+  }); // end $(function(){});

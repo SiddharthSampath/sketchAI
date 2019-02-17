@@ -1,12 +1,26 @@
-#container {border: 15px ridge grey;width:1010px; height: 510px;margin-top: 5%; margin-left: 20%; margin-right:10%;}
-#imageView { border: 1px solid #fff; background-color: #fff}
-/*#imageView {border: 15px ridge grey; margin: 30px auto; background: white; border-radius: 20px;}
-/*cursor:crosshair*/
+body{ background-color: ivory; }
+#wrapper{
+    position:relative;
+    width:900px;
+    height:400px;
+}
+#canvas,#canvas2{
+    position:absolute; top:0px; left:0px;
+    /*border:1px solid green;*/
+    width:100%;
+    height:100%;
+}
+#canvas2{
+    border:15px ridge grey;
+}
 .btn{
   margin-top: 1%;
 
 }
-#clear{
-    margin-left: 20%;
+#clear,#start{
+  margin-left: 20%;
 
-    }
+}
+#start{
+  margin-bottom: 1%;
+}

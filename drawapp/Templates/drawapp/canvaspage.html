@@ -1,62 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>SketchAI</title>
-
-    {% load static %}
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- font awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+{% load static %}
     <link rel="stylesheet" href="{% static 'drawapp/css/styles.css' %}">
     <script type="text/javascript" src="{% static 'drawapp/js/canvas.js' %}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
-    <!-- using different icons for cursor -->
-    <script src="https://cdn.rawgit.com/jwarby/jquery-awesome-cursor/master/dist/jquery.awesome-cursor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="../excanvas.js"></script><![endif]-->
+<!--<script src="canvas.js"></script>
+<link rel="stylesheet" href="styles.css">-->
 
+</head>
 
-    <!-- erase and draw buttons, with cursor change on clicking the respective buttons -->
-
-    <script type="text/javascript">
-      $(document).ready(function() {
-      $('body').css('cursor', 'pointer');
-      var canvas = document.getElementById("imageView");
-      var context = canvas.getContext("2d");
-      $("#eraser").click(function() {
-		    context.strokeStyle = "#FFFFFF";
-        $('body').css('cursor', 'grabbing');
-        context.lineWidth = 5;
-	     });
-       $("#draw").click(function() {
- 		    context.strokeStyle = "#000";
-        context.lineWidth = 1;
-        $('body').css('cursor', 'pointer');
-
-
-
- 	     });
-     });
-    </script>
-
-  </head>
-  <body>
+<body>
     {% include 'drawapp/includes/navbar.html' %}
-    <div id="container"><canvas id="imageView" width="980" height="480"><p>Unfortunately, your browser is currently unsupported by our web application. We are sorry for the inconvenience. Please use one of the supported browsers listed below, or draw the image you want using an offline tool.</p><p>Supported browsers: <a href="http://www.opera.com">Opera</a>, <a href="http://www.mozilla.com">Firefox</a>, <a href="http://www.apple.com/safari">Safari</a>, and <a href="http://www.konqueror.org">Konqueror</a>.</p></canvas>
+    <!--<p>Image to use:</p>
+    <img src="dog.jpg" width="32" height="32">-->
+    <button id="start" class="btn" onclick="draw()">Start Drawing!</button>
+    <div class="container"id="wrapper">
+
+        <canvas id="canvas2" width=900 height=400></canvas>
+        <canvas id="canvas" width=900 height=400></canvas>
     </div>
-    <a id="downloadLnk" download="test.jpg"></a>
+    <button type="button" class="btn" id="clear" value ="clear" onclick="clearcanvas()"> clear</button>
+
+    <!--<button type="button" class="btn" id="clear" value ="clear" onclick="window.location.reload()"> clear</button>
+    --><a id="downloadLnk" download="test.jpg"></a>
+
+    <button class="btn" id="pen">Draw</button>
+    <button class="btn" id="eraser">Eraser</button>
 
 
-    <button type="button" class="btn" id="clear" value ="clear" onclick="window.location.reload()"> clear</button>
-    <button type="button" id="eraser" class="btn" name="button">Erase</button>
-    <button type="button" id="draw" class="btn" name="button">Draw</button>
-
-  <!-- download functionality -->
-  <script type="text/javascript">
-    var canvas = document.querySelector( 'canvas' )
-    var link = document.createElement('a');
+    {% load static %}
+    <script type="text/javascript">
+    // drawing on canvas
+    function draw() {
+      var canvas = document.getElementById('canvas2');
+      var image = new Image();
+      image.src = "{% static 'drawapp/images/dog.jpg' %}";
+    //image.width="32";
+    //image.height="32";
+      image.onload = function () {
+        var cxt = canvas.getContext('2d');
+        //cxt.globalCompositeOperation = 'saturation';
+        cxt.globalAlpha = 0.4;
+        cxt.drawImage(image,
+             canvas.width / 2 - image.width / 2,
+             canvas.height / 2 - image.height / 2
+        );};
+      }
+      //downloading image
+      var canvas = document.getElementById('canvas')
+      var link = document.createElement('a');
         link.innerHTML = 'download image';
         link.classList.add("btn")
         link.setAttribute("id", "downloadbtn")
@@ -66,8 +65,13 @@
     }, false);
     document.body.appendChild(link);
 
+    function clearcanvas(){
+
+      const context = canvas.getContext('2d');
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }
 
   </script>
-  </body>
-
+</body>
 </html>

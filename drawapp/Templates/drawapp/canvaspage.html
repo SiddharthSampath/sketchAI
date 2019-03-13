@@ -31,9 +31,8 @@
 
     <!--<button type="button" class="btn" id="clear" value ="clear" onclick="window.location.reload()"> clear</button>
     --><a id="downloadLnk" download="test.jpg"></a>
-
-    <button class="btn" id="pen">Draw</button>
     <button class="btn" id="eraser">Eraser</button>
+    <button class="btn" id="pen">Draw</button>
     <button type="button" class="btn" id="reload" onclick="window.location.reload()"> Reload page</button>
 
 
@@ -63,7 +62,14 @@
         link.setAttribute("id", "downloadbtn")
         link.addEventListener('click', function(ev) {
         link.href = canvas.toDataURL();
-        link.download = "mypainting.png";
+        var name = prompt("Enter name of image(will be saved as .jpg)","test")
+        if(name!=null || name!="")
+        {
+          name = name + ".jpg";
+          link.download = name;
+        }
+
+
     }, false);
     document.body.appendChild(link);
 

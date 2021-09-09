@@ -1,4 +1,4 @@
-An app which teaches users how to draw with AI The app is made with Django, so download the entire project and perform the following steps to run:
+An app helps artists with various tasks such as automated colouring, converting line drawings to their shaded forms and much more! The app is made with Django, so download the entire project and perform the following steps to run:
 
 Open the folder through cmd or terminal
 
